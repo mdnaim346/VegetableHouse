@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Tree View -->
+    <record id="view_vegetable_tree" model="ir.ui.view">
+        <field name="name">vegetable.house.tree</field>
+        <field name="model">vegetable.house</field>
+        <field name="arch" type="xml">
+            <tree string="Vegetables">
+                <field name="name"/>
+                <field name="price_kg"/>
+                <field name="price_piece"/>
+                <field name="availibility"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_vegetable_form" model="ir.ui.view">
+        <field name="name">vegetable.house.form</field>
+        <field name="model">vegetable.house</field>
+        <field name="arch" type="xml">
+            <form string="Vegetable">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="availibility"/>
+                        </group>
+                        <group>
+                            <field name="price_kg"/>
+                            <field name="price_piece"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Description">
+                            <field name="description"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_vegetable_search" model="ir.ui.view">
+        <field name="name">vegetable.house.search</field>
+        <field name="model">vegetable.house</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <filter name="available" string="Available"
+                        domain="[('availibility','=',True)]"/>
+                <filter name="not_available" string="Not Available"
+                        domain="[('availibility','=',False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_vegetable_house" model="ir.actions.act_window">
+        <field name="name">Vegetable House</field>
+        <field name="res_model">vegetable.house</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_vegetable_search"/>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_vegetable_root" name="Vegetable Management" sequence="10"/>
+
+    <menuitem id="menu_vegetable_house"
+              name="Vegetables"
+              parent="menu_vegetable_root"
+              action="action_vegetable_house"
+              sequence="1"/>
+
+</odoo>

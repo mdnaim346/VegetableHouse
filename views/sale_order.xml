@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Inherit Sale Order Form -->
+    <record id="view_sale_order_form_inherit_vegetable" model="ir.ui.view">
+        <field name="name">sale.order.form.vegetable.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Add after customer -->
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="Vegetable_ids" widget="many2many_tags"/>
+            </xpath>
+
+            <!-- Add pricing section -->
+            <xpath expr="//sheet/group" position="inside">
+                <group string="Vegetable Pricing">
+                    <field name="total_price" readonly="1"/>
+                    <field name="received_amount"/>
+                    <field name="due_amount" readonly="1"/>
+                </group>
+            </xpath>
+
+            <!-- Add status field in header -->
+            <xpath expr="//header" position="inside">
+                <field name="status" widget="statusbar"
+                       statusbar_visible="draft,confirmed,in_process,one_the_way,delivered"/>
+            </xpath>
+
+        </field>
+    </record>
+    <record id="view_sale_order_tree_inherit_vegetable" model="ir.ui.view">
+    <field name="name">sale.order.tree.vegetable.inherit</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.view_quotation_tree"/>
+    <field name="arch" type="xml">
+
+        <xpath expr="//field[@name='amount_total']" position="after">
+            <field name="total_price"/>
+            <field name="due_amount"/>
+            <field name="status"/>
+        </xpath>
+
+    </field>
+</record>
+
+</odoo>
