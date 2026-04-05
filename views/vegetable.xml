@@ -7,6 +7,7 @@
         <field name="model">vegetable.house</field>
         <field name="arch" type="xml">
             <tree string="Vegetables">
+                <field name="image" widget="image" options="{'size': [40, 40]}"/>
                 <field name="name"/>
                 <field name="price_kg"/>
                 <field name="price_piece"/>
@@ -22,6 +23,7 @@
         <field name="arch" type="xml">
             <form string="Vegetable">
                 <sheet>
+                    <field name="image" widget="image" class="oe_avatar" options="{'preview_image': 'image'}"/>
                     <group>
                         <group>
                             <field name="name"/>
