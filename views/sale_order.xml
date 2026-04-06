@@ -31,18 +31,29 @@
         </field>
     </record>
     <record id="view_sale_order_tree_inherit_vegetable" model="ir.ui.view">
-    <field name="name">sale.order.tree.vegetable.inherit</field>
-    <field name="model">sale.order</field>
-    <field name="inherit_id" ref="sale.view_quotation_tree"/>
-    <field name="arch" type="xml">
+        <field name="name">sale.order.tree.vegetable.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree"/>
+        <field name="arch" type="xml">
 
-        <xpath expr="//field[@name='amount_total']" position="after">
-            <field name="total_price"/>
-            <field name="due_amount"/>
-            <field name="status"/>
-        </xpath>
+            <xpath expr="//field[@name='amount_total']" position="after">
+                <field name="total_price"/>
+                <field name="due_amount"/>
+                <field name="status"/>
+            </xpath>
 
-    </field>
-</record>
+        </field>
+    </record>
+
+    <record id="action_vegetable_admin_dashboard" model="ir.actions.client">
+        <field name="name">Vegetable Dashboard</field>
+        <field name="tag">vegetable_house_admin_dashboard</field>
+    </record>
+
+    <menuitem id="menu_vegetable_admin_dashboard"
+              name="Dashboard"
+              parent="sale.sale_menu_root"
+              action="action_vegetable_admin_dashboard"
+              sequence="5"/>
 
 </odoo>

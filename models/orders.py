@@ -31,4 +31,36 @@ class Orders(models.Model):
     @api.depends('total_price', 'received_amount')
     def _compute_due_amount(self):
         for order in self:
-            order.due_amount = order.total_price - order.received_amount    
+            order.due_amount = order.total_price - order.received_amount
+
+    @api.model
+    def get_admin_dashboard_metrics(self):
+        orders = self.search([])
+
+        total_orders = len(orders)
+        total_sales = len(orders.filtered(lambda order: order.status == 'delivered'))
+        total_amount_collected = sum(orders.mapped('received_amount'))
+        total_amount_due = sum(orders.mapped('due_amount'))
+        total_sale_value = sum(orders.mapped('total_price'))
+
+        recent_orders = orders.sorted(lambda order: order.create_date or order.id, reverse=True)[:5]
+
+        return {
+            'total_orders': total_orders,
+            'total_sales': total_sales,
+            'total_amount_collected': total_amount_collected,
+            'total_amount_due': total_amount_due,
+            'total_sale_value': total_sale_value,
+            'recent_orders': [
+                {
+                    'id': order.id,
+                    'name': order.name,
+                    'customer': order.partner_id.name or 'Unknown',
+                    'status': order.status,
+                    'total_price': order.total_price,
+                    'received_amount': order.received_amount,
+                    'due_amount': order.due_amount,
+                }
+                for order in recent_orders
+            ],
+        }

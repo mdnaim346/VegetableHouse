@@ -19,15 +19,12 @@
     'application': True,
    
     'assets': {
-       
         'web.assets_backend': [
-            
-            
+            'vegetable_house/static/src/components/Vegetable/AdminDashboard/admin_dashboard.js',
+            'vegetable_house/static/src/components/Vegetable/AdminDashboard/admin_dashboard.xml',
         ],
         'web.assets_frontend': [
-           
         ],
-        
     },
     
 }

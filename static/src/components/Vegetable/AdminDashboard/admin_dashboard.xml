@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="vegetable_house.AdminDashboard" owl="1">
+        <div class="o_vh_dashboard" style="padding: 24px; background: linear-gradient(135deg, #f6fff8 0%, #eefbf2 100%); min-height: 100%;">
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                <div>
+                    <h1 class="mb-1" style="font-size: 30px; font-weight: 700; color: #1f2937;">Vegetable House Dashboard</h1>
+                    <p class="mb-0 text-muted">Track your sales plan, collections, due amounts, and recent order activity.</p>
+                </div>
+                <button type="button"
+                        class="btn btn-success"
+                        style="border-radius: 12px; padding: 10px 18px; font-weight: 600;"
+                        t-on-click="openOrders">
+                    View Orders
+                </button>
+            </div>
+
+            <t t-if="state.loading">
+                <div class="d-flex justify-content-center align-items-center"
+                     style="min-height: 320px; background: #ffffff; border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);">
+                    <div class="text-center">
+                        <i class="fa fa-spinner fa-spin fa-2x text-success mb-3"/>
+                        <div class="fw-bold">Loading dashboard data...</div>
+                    </div>
+                </div>
+            </t>
+
+            <t t-else="">
+                <div class="row g-3 mb-4">
+                    <div class="col-12 col-md-6 col-xl-3">
+                        <div class="o_vh_stat_card" style="background: #ffffff; border-radius: 20px; padding: 22px; box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08); border-left: 6px solid #22c55e;">
+                            <div class="text-muted mb-2" style="font-size: 14px;">Total Orders</div>
+                            <div style="font-size: 32px; font-weight: 700; color: #111827;" t-esc="state.metrics.total_orders"/>
+                            <div class="mt-2 text-success" style="font-size: 13px;">All created vegetable orders</div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-xl-3">
+                        <div class="o_vh_stat_card" style="background: #ffffff; border-radius: 20px; padding: 22px; box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08); border-left: 6px solid #3b82f6;">
+                            <div class="text-muted mb-2" style="font-size: 14px;">Total Sales</div>
+                            <div style="font-size: 32px; font-weight: 700; color: #111827;" t-esc="state.metrics.total_sales"/>
+                            <div class="mt-2 text-primary" style="font-size: 13px;">Delivered orders count</div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-xl-3">
+                        <div class="o_vh_stat_card" style="background: #ffffff; border-radius: 20px; padding: 22px; box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08); border-left: 6px solid #14b8a6;">
+                            <div class="text-muted mb-2" style="font-size: 14px;">Amount Collected</div>
+                            <div style="font-size: 32px; font-weight: 700; color: #111827;" t-esc="formatCurrency(state.metrics.total_amount_collected)"/>
+                            <div class="mt-2" style="font-size: 13px; color: #0f766e;">Received from customers</div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-xl-3">
+                        <div class="o_vh_stat_card" style="background: #ffffff; border-radius: 20px; padding: 22px; box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08); border-left: 6px solid #f97316;">
+                            <div class="text-muted mb-2" style="font-size: 14px;">Amount Due</div>
+                            <div style="font-size: 32px; font-weight: 700; color: #111827;" t-esc="formatCurrency(state.metrics.total_amount_due)"/>
+                            <div class="mt-2" style="font-size: 13px; color: #c2410c;">Pending customer payments</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-12 col-xl-4">
+                        <div style="background: #ffffff; border-radius: 20px; padding: 24px; box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08); height: 100%;">
+                            <h3 style="font-size: 20px; font-weight: 700; color: #111827;">Business Plan Overview</h3>
+                            <p class="text-muted mb-4">A quick summary of your current vegetable business performance.</p>
+
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="text-muted">Total Sale Value</span>
+                                <span class="fw-bold text-dark" t-esc="formatCurrency(state.metrics.total_sale_value)"/>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="text-muted">Collection Progress</span>
+                                <span class="fw-bold text-success"
+                                      t-esc="state.metrics.total_sale_value ? `${((state.metrics.total_amount_collected / state.metrics.total_sale_value) * 100).toFixed(1)}%` : '0.0%'"/>
+                            </div>
+
+                            <div class="progress mb-4" style="height: 10px; border-radius: 999px; background: #e5e7eb;">
+                                <div class="progress-bar bg-success"
+                                     role="progressbar"
+                                     t-att-style="`width: ${state.metrics.total_sale_value ? (state.metrics.total_amount_collected / state.metrics.total_sale_value) * 100 : 0}%`"/>
+                            </div>
+
+                            <div style="background: #f9fafb; border-radius: 16px; padding: 18px;">
+                                <div class="mb-2 fw-bold text-dark">Dashboard Notes</div>
+                                <ul class="mb-0 ps-3 text-muted">
+                                    <li>Monitor all customer orders in one place.</li>
+                                    <li>Compare delivered orders against total orders.</li>
+                                    <li>Follow collected cash and outstanding due amounts.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-xl-8">
+                        <div style="background: #ffffff; border-radius: 20px; padding: 24px; box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);">
+                            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                                <div>
+                                    <h3 style="font-size: 20px; font-weight: 700; color: #111827;" class="mb-1">Recent Orders</h3>
+                                    <p class="text-muted mb-0">Latest order details with payment status.</p>
+                                </div>
+                            </div>
+
+                            <t t-if="state.metrics.recent_orders.length">
+                                <div class="table-responsive">
+                                    <table class="table table-borderless align-middle mb-0">
+                                        <thead style="border-bottom: 1px solid #e5e7eb;">
+                                            <tr class="text-muted">
+                                                <th>Order</th>
+                                                <th>Customer</th>
+                                                <th>Status</th>
+                                                <th>Total</th>
+                                                <th>Collected</th>
+                                                <th>Due</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr t-foreach="state.metrics.recent_orders" t-as="order" t-key="order.id" style="border-bottom: 1px solid #f3f4f6;">
+                                                <td class="fw-bold text-dark" t-esc="order.name"/>
+                                                <td t-esc="order.customer"/>
+                                                <td>
+                                                    <span t-att-class="getStatusClass(order.status)"
+                                                          style="display: inline-block; padding: 6px 12px; border-radius: 999px; font-size: 12px; font-weight: 600; background: #ecfdf5; color: #047857;">
+                                                        <t t-esc="getStatusLabel(order.status)"/>
+                                                    </span>
+                                                </td>
+                                                <td t-esc="formatCurrency(order.total_price)"/>
+                                                <td class="text-success fw-bold" t-esc="formatCurrency(order.received_amount)"/>
+                                                <td class="text-danger fw-bold" t-esc="formatCurrency(order.due_amount)"/>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </t>
+                            <t t-else="">
+                                <div class="text-center text-muted py-5">
+                                    <i class="fa fa-shopping-basket fa-2x mb-3"/>
+                                    <div>No order data available yet.</div>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </div>
+    </t>
+</templates>
