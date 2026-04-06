@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="vegetable_house.UserDashboard" owl="1">
+        <div class="o_vh_user_dashboard" style="padding: 24px; background: linear-gradient(135deg, #fffef7 0%, #f0fff4 100%); min-height: 100%;">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+                <div>
+                    <h1 class="mb-1" style="font-size: 30px; font-weight: 700; color: #166534;">Welcome, <t t-esc="state.dashboard.current_user"/></h1>
+                    <p class="mb-0 text-muted">Browse vegetables, place an order, and track your recent order history from one user view.</p>
+                </div>
+                <div class="text-end">
+                    <div class="fw-bold text-dark">Delivery Address</div>
+                    <div class="text-muted">
+                        <t t-esc="state.dashboard.address or 'No address configured yet.'"/>
+                    </div>
+                </div>
+            </div>
+
+            <t t-if="state.loading">
+                <div class="d-flex justify-content-center align-items-center"
+                     style="min-height: 320px; background: #ffffff; border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);">
+                    <div class="text-center">
+                        <i class="fa fa-spinner fa-spin fa-2x text-success mb-3"/>
+                        <div class="fw-bold">Loading your dashboard...</div>
+                    </div>
+                </div>
+            </t>
+
+            <t t-else="">
+                <div class="row g-3 mb-4">
+                    <div class="col-12 col-md-4">
+                        <div style="background: #ffffff; border-radius: 18px; padding: 20px; box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08); border-left: 5px solid #16a34a;">
+                            <div class="text-muted mb-2">Recent Orders</div>
+                            <div style="font-size: 30px; font-weight: 700;" t-esc="state.dashboard.summary.order_count"/>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div style="background: #ffffff; border-radius: 18px; padding: 20px; box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08); border-left: 5px solid #2563eb;">
+                            <div class="text-muted mb-2">Total Spent</div>
+                            <div style="font-size: 30px; font-weight: 700;" t-esc="formatCurrency(state.dashboard.summary.total_spent)"/>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div style="background: #ffffff; border-radius: 18px; padding: 20px; box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08); border-left: 5px solid #f97316;">
+                            <div class="text-muted mb-2">Total Due</div>
+                            <div style="font-size: 30px; font-weight: 700;" t-esc="formatCurrency(state.dashboard.summary.total_due)"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-12 col-xl-7">
+                        <div style="background: #ffffff; border-radius: 20px; padding: 24px; box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);">
+                            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                                <div>
+                                    <h3 class="mb-1" style="font-size: 22px; font-weight: 700; color: #111827;">Available Vegetables</h3>
+                                    <p class="text-muted mb-0">Select one or more vegetables and create a quick order.</p>
+                                </div>
+                                <button type="button"
+                                        class="btn btn-success"
+                                        t-att-disabled="state.submitting"
+                                        t-on-click="createOrder">
+                                    <t t-esc="state.submitting ? 'Creating Order...' : 'Create Order'"/>
+                                </button>
+                            </div>
+
+                            <t t-if="state.dashboard.available_vegetables.length">
+                                <div class="row g-3">
+                                    <div class="col-12 col-md-6"
+                                         t-foreach="state.dashboard.available_vegetables"
+                                         t-as="vegetable"
+                                         t-key="vegetable.id">
+                                        <div style="border: 1px solid #e5e7eb; border-radius: 18px; padding: 16px; height: 100%; background: #f9fafb;">
+                                            <div class="d-flex align-items-start gap-3">
+                                                <t t-if="vegetable.image_url">
+                                                    <img t-att-src="vegetable.image_url"
+                                                         alt="Vegetable"
+                                                         style="width: 72px; height: 72px; object-fit: cover; border-radius: 14px;"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <div class="d-flex justify-content-center align-items-center"
+                                                         style="width: 72px; height: 72px; border-radius: 14px; background: #dcfce7; color: #166534; font-size: 24px;">
+                                                        <i class="fa fa-leaf"/>
+                                                    </div>
+                                                </t>
+
+                                                <div class="flex-grow-1">
+                                                    <div class="d-flex justify-content-between align-items-start gap-2">
+                                                        <h5 class="mb-1" style="font-weight: 700;" t-esc="vegetable.name"/>
+                                                        <input type="checkbox"
+                                                               t-att-checked="state.selectedVegetableIds.includes(vegetable.id)"
+                                                               t-on-change="(ev) => this.toggleVegetable(vegetable.id, ev.target.checked)"/>
+                                                    </div>
+                                                    <div class="text-muted small mb-2" t-esc="vegetable.description or 'Fresh and available for order.'"/>
+                                                    <div class="small">
+                                                        <span class="fw-bold text-success me-3">KG: <t t-esc="formatCurrency(vegetable.price_kg)"/></span>
+                                                        <span class="fw-bold text-primary">Piece: <t t-esc="formatCurrency(vegetable.price_piece)"/></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                            <t t-else="">
+                                <div class="text-center text-muted py-5">
+                                    <i class="fa fa-shopping-basket fa-2x mb-3"/>
+                                    <div>No vegetables are available right now.</div>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-xl-5">
+                        <div style="background: #ffffff; border-radius: 20px; padding: 24px; box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);">
+                            <h3 class="mb-1" style="font-size: 22px; font-weight: 700; color: #111827;">My Recent Orders</h3>
+                            <p class="text-muted mb-3">Track your latest orders and payment status.</p>
+
+                            <t t-if="state.dashboard.user_orders.length">
+                                <div class="d-flex flex-column gap-3">
+                                    <div t-foreach="state.dashboard.user_orders" t-as="order" t-key="order.id"
+                                         style="border: 1px solid #e5e7eb; border-radius: 18px; padding: 16px; background: #f9fafb;">
+                                        <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
+                                            <div>
+                                                <div class="fw-bold text-dark" t-esc="order.name"/>
+                                                <div class="small text-muted">Order total: <t t-esc="formatCurrency(order.total_price)"/></div>
+                                            </div>
+                                            <span t-att-class="getStatusBadgeClass(order.status)">
+                                                <t t-esc="getStatusLabel(order.status)"/>
+                                            </span>
+                                        </div>
+                                        <div class="d-flex justify-content-between small">
+                                            <span class="text-success">Paid: <t t-esc="formatCurrency(order.received_amount)"/></span>
+                                            <span class="text-danger">Due: <t t-esc="formatCurrency(order.due_amount)"/></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                            <t t-else="">
+                                <div class="text-center text-muted py-5">
+                                    <i class="fa fa-clock-o fa-2x mb-3"/>
+                                    <div>You have not placed any orders yet.</div>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </div>
+    </t>
+</templates>

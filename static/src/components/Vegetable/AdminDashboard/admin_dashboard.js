@@ -13,6 +13,7 @@ class VegetableAdminDashboard extends Component {
             loading: true,
             metrics: {
                 total_orders: 0,
+                total_products: 0,
                 total_sales: 0,
                 total_amount_collected: 0,
                 total_amount_due: 0,

@@ -37,9 +37,17 @@
 
                     <div class="col-12 col-md-6 col-xl-3">
                         <div class="o_vh_stat_card" style="background: #ffffff; border-radius: 20px; padding: 22px; box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08); border-left: 6px solid #3b82f6;">
+                            <div class="text-muted mb-2" style="font-size: 14px;">Total Products</div>
+                            <div style="font-size: 32px; font-weight: 700; color: #111827;" t-esc="state.metrics.total_products"/>
+                            <div class="mt-2 text-primary" style="font-size: 13px;">All available vegetable items</div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-xl-3">
+                        <div class="o_vh_stat_card" style="background: #ffffff; border-radius: 20px; padding: 22px; box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08); border-left: 6px solid #06b6d4;">
                             <div class="text-muted mb-2" style="font-size: 14px;">Total Sales</div>
                             <div style="font-size: 32px; font-weight: 700; color: #111827;" t-esc="state.metrics.total_sales"/>
-                            <div class="mt-2 text-primary" style="font-size: 13px;">Delivered orders count</div>
+                            <div class="mt-2" style="font-size: 13px; color: #0e7490;">Delivered orders count</div>
                         </div>
                     </div>
 
