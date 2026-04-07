@@ -1,0 +1,66 @@
+/* 
+    Vegetable House - Global Styling
+    Custom modern scrollbar and shared transitions 
+*/
+
+/* --- CUSTOM MODERN SCROLLBAR (Webkit) --- */
+
+/* Width the vertical, height for horizontal */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+/* Track background */
+::-webkit-scrollbar-track {
+    background: rgba(240, 24DF, 244, 0.5); /* Very light green/gray */
+    border-radius: 10px;
+}
+
+/* The thumb (the part you drag) */
+::-webkit-scrollbar-thumb {
+    background: #16a34a; /* Brand Green */
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+    transition: background 0.3s;
+}
+
+/* Hover effect on thumb */
+::-webkit-scrollbar-thumb:hover {
+    background: #065f46; /* Darker Green */
+}
+
+/* --- FIREFOX SCROLLBAR --- */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #16a34a rgba(240, 253, 244, 0.5);
+}
+
+/* --- GLOBAL TRANSITIONS & SMOOTHNESS --- */
+.o_vh_dashboard, .o_vh_login_page, .o_vh_user_dashboard {
+    scroll-behavior: smooth;
+    transition: opacity 0.3s ease-in-out;
+    height: calc(100vh - 80px) !important; /* Subtract navbar and buffer */
+    overflow-y: auto !important;
+    display: block !important;
+    padding-bottom: 100px !important;
+}
+
+/* Fix for Odoo Backend containers to ensure our scrollbar shows */
+.o_content {
+    scrollbar-gutter: stable;
+}
+
+/* Prevent layout shift during loading */
+.o_vh_loading_mask {
+    backdrop-filter: blur(4px);
+    transition: all 0.4s ease;
+}
+
+/* Common form focus effect */
+input:focus, select:focus, textarea:focus {
+    border-color: #16a34a !important;
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15) !important;
+    transition: all 0.2s ease;
+}

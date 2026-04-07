@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="vegetable_house.AdminDashboard" owl="1">
-        <div class="o_vh_dashboard" style="padding: 24px; background: linear-gradient(135deg, #f6fff8 0%, #eefbf2 100%); overflow-y: auto;">
+        <div class="o_vh_dashboard" style="padding: 24px; background: linear-gradient(135deg, #f6fff8 0%, #eefbf2 100%);">
             <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
                 <div>
                     <h1 class="mb-1" style="font-size: 30px; font-weight: 700; color: #1f2937;">Vegetable House Dashboard</h1>
