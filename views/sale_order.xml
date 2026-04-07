@@ -45,6 +45,11 @@
         </field>
     </record>
 
+    <record id="action_vegetable_login" model="ir.actions.client">
+        <field name="name">Vegetable Login</field>
+        <field name="tag">vegetable_house_login</field>
+    </record>
+
     <record id="action_vegetable_admin_dashboard" model="ir.actions.client">
         <field name="name">Vegetable Dashboard</field>
         <field name="tag">vegetable_house_admin_dashboard</field>
@@ -55,15 +60,12 @@
         <field name="tag">vegetable_house_user_dashboard</field>
     </record>
 
-    <menuitem id="menu_vegetable_admin_dashboard"
-              name="Dashboard"
+    <!-- Single entry point: Login page routes admin → Admin Dashboard, others → User Dashboard -->
+    <menuitem id="menu_vegetable_login"
+              name="Vegetable Login"
               parent="sale.sale_menu_root"
-              action="action_vegetable_admin_dashboard"
+              action="action_vegetable_login"
               sequence="5"/>
 
-    <menuitem id="menu_vegetable_user_dashboard"
-              name="User View"
-              parent="sale.sale_menu_root"
-              action="action_vegetable_user_dashboard"
-              sequence="6"/>
 </odoo>
+

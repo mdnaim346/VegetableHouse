@@ -20,6 +20,8 @@
    
     'assets': {
         'web.assets_backend': [
+            'vegetable_house/static/src/components/Vegetable/Login/login.js',
+            'vegetable_house/static/src/components/Vegetable/Login/login.xml',
             'vegetable_house/static/src/components/Vegetable/AdminDashboard/admin_dashboard.js',
             'vegetable_house/static/src/components/Vegetable/AdminDashboard/admin_dashboard.xml',
             'vegetable_house/static/src/components/Vegetable/vegetable.js',

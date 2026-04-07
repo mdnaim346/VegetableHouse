@@ -132,3 +132,18 @@ class Orders(models.Model):
             "message": f"Order {order.name} created successfully.",
             "order_id": order.id,
         }
+
+    @api.model
+    def update_order_status(self, order_id, new_status):
+        """ Update the status of a specific sale order """
+        order = self.browse(int(order_id))
+        if not order.exists():
+            return {"success": False, "message": "Order not found."}
+        
+        # Validate status
+        valid_statuses = [s[0] for s in self._fields['status'].selection]
+        if new_status not in valid_statuses:
+            return {"success": False, "message": f"Invalid status: {new_status}"}
+
+        order.write({"status": new_status})
+        return {"success": True, "message": f"Order {order.name} updated to {new_status}."}
