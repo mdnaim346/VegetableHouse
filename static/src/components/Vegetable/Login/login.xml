@@ -54,7 +54,7 @@
                         Vegetable House
                     </h1>
                     <p style="color: #6b7280; font-size: 13px; margin: 0;">
-                        <t t-if="state.mode === 'login'">Sign in to access your dashboard</t>
+                        <t t-if="state.mode === 'login'">Sign in to dashboard</t>
                         <t t-else="">Create your account to get started</t>
                     </p>
                 </div>
@@ -137,8 +137,7 @@
 
                     <!-- Username -->
                     <div style="margin-bottom: 16px;">
-                        <label style="display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:7px;">
-                            Username / Email
+                        <label style="display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:7px;"> User name
                         </label>
                         <div style="position:relative;">
                             <i class="fa fa-user" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);color:#9ca3af;font-size:13px;"/>
@@ -177,8 +176,6 @@
                             </button>
                         </div>
                     </div>
-
-                    <!-- Sign In Button -->
                     <button
                         id="vh_login_submit"
                         type="button"
