@@ -13,13 +13,15 @@
 
 /* Track background */
 ::-webkit-scrollbar-track {
-    background: rgba(240, 24DF, 244, 0.5); /* Very light green/gray */
+    background: rgba(240, 24DF, 244, 0.5);
+    /* Very light green/gray */
     border-radius: 10px;
 }
 
 /* The thumb (the part you drag) */
 ::-webkit-scrollbar-thumb {
-    background: #16a34a; /* Brand Green */
+    background: #16a34a;
+    /* Brand Green */
     border-radius: 10px;
     border: 2px solid transparent;
     background-clip: content-box;
@@ -28,20 +30,24 @@
 
 /* Hover effect on thumb */
 ::-webkit-scrollbar-thumb:hover {
-    background: #065f46; /* Darker Green */
+    background: #065f46;
+    /* Darker Green */
 }
 
 /* --- FIREFOX SCROLLBAR --- */
 * {
     scrollbar-width: thin;
-    scrollbar-color: #16a34a rgba(240, 253, 244, 0.5);
+    scrollbar-color: #6a6e6b rgba(240, 253, 244, 0.5);
 }
 
 /* --- GLOBAL TRANSITIONS & SMOOTHNESS --- */
-.o_vh_dashboard, .o_vh_login_page, .o_vh_user_dashboard {
+.o_vh_dashboard,
+.o_vh_login_page,
+.o_vh_user_dashboard {
     scroll-behavior: smooth;
     transition: opacity 0.3s ease-in-out;
-    height: calc(100vh - 80px) !important; /* Subtract navbar and buffer */
+    height: calc(100vh - 80px) !important;
+    /* Subtract navbar and buffer */
     overflow-y: auto !important;
     display: block !important;
     padding-bottom: 100px !important;
@@ -59,8 +65,64 @@
 }
 
 /* Common form focus effect */
-input:focus, select:focus, textarea:focus {
-    border-color: #16a34a !important;
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #3f413f !important;
     box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15) !important;
     transition: all 0.2s ease;
+}
+
+/* --- PREMIUM BUTTONS --- */
+.vh-btn-primary {
+    background: linear-gradient(135deg, #16a34a 0%, #065f46 100%);
+    color: #ffffff !important;
+    border: none;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 13px 24px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 25px -5px rgba(22, 163, 74, 0.4);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.vh-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 35px -10px rgba(22, 163, 74, 0.5);
+    background: linear-gradient(135deg, #22c55e 0%, #064e3b 100%);
+    color: #ffffff;
+}
+
+.vh-btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 5px 15px -5px rgba(22, 163, 74, 0.4);
+}
+
+.vh-btn-primary:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.vh-btn-secondary {
+    background: #f8fafc;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    font-weight: 600;
+    padding: 10px 20px;
+    transition: all 0.2s;
+}
+
+.vh-btn-secondary:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    color: #1e293b;
 }
