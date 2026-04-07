@@ -1,3 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 vegetable.house,vegetable.house,model_vegetable_house,,1,1,1,1
 vegetable.house_user,vegetable.house,model_vegetable_house,base.group_user,1,1,1,1
+order.line_user,vegetable.order.line,model_vegetable_order_line,base.group_user,1,1,1,1

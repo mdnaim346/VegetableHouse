@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Component, useState } from "@odoo/owl";
+import { Component, onWillStart, useState } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { session } from "@web/session";
@@ -9,6 +9,7 @@ class VegetableLogin extends Component {
     setup() {
         this.orm = useService("orm");
         this.action = useService("action");
+        this.user = useService("user");
 
         this.state = useState({
             // Mode: 'login' or 'register'
@@ -32,6 +33,24 @@ class VegetableLogin extends Component {
             loading: false,
             error: "",
             successMessage: "",
+            checkingAuth: true,
+        });
+
+        onWillStart(async () => {
+            // If already logged in (not a public/anonymous user), bypass login form
+            // session.uid is present if authenticated. 
+            // In Odoo 17, 'public user' usually has a UID but with limited groups.
+            const isPublic = await this.orm.call("res.users", "has_group", ["base.group_public"]);
+            
+            if (session.uid && !isPublic) {
+                const isAdmin = await this.orm.call("res.users", "has_group", ["base.group_system"]);
+                if (isAdmin) {
+                    await this.action.doAction("vegetable_house_admin_dashboard");
+                } else {
+                    await this.action.doAction("vegetable_house_user_dashboard");
+                }
+            }
+            this.state.checkingAuth = false;
         });
     }
 

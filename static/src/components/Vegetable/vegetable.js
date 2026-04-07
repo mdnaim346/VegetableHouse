@@ -8,11 +8,13 @@ class VegetableUserDashboard extends Component {
     setup() {
         this.orm = useService("orm");
         this.notification = useService("notification");
+        this.action = useService("action");
 
         this.state = useState({
             loading: true,
             submitting: false,
-            selectedVegetableIds: [],
+            // { id: quantity }
+            selectedVegetables: {},
             dashboard: {
                 current_user: "",
                 address: "",
@@ -41,30 +43,40 @@ class VegetableUserDashboard extends Component {
     }
 
     toggleVegetable(vegetableId, isChecked) {
-        const selected = new Set(this.state.selectedVegetableIds);
         if (isChecked) {
-            selected.add(vegetableId);
+            this.state.selectedVegetables[vegetableId] = 1;
         } else {
-            selected.delete(vegetableId);
+            delete this.state.selectedVegetables[vegetableId];
         }
-        this.state.selectedVegetableIds = [...selected];
+    }
+
+    updateQuantity(vegetableId, qty) {
+        if (this.state.selectedVegetables[vegetableId] !== undefined) {
+            this.state.selectedVegetables[vegetableId] = Math.max(0.1, parseFloat(qty) || 1);
+        }
     }
 
     async createOrder() {
-        if (!this.state.selectedVegetableIds.length) {
+        const selectedIds = Object.keys(this.state.selectedVegetables);
+        if (!selectedIds.length) {
             this.notification.add("Please select at least one vegetable.", { type: "warning" });
             return;
         }
 
         this.state.submitting = true;
         try {
-            const response = await this.orm.call("sale.order", "create_user_order", [this.state.selectedVegetableIds]);
+            const lineData = selectedIds.map(id => ({
+                id: parseInt(id),
+                qty: this.state.selectedVegetables[id]
+            }));
+
+            const response = await this.orm.call("sale.order", "create_user_order", [lineData]);
             this.notification.add(response.message, {
                 type: response.success ? "success" : "danger",
             });
 
             if (response.success) {
-                this.state.selectedVegetableIds = [];
+                this.state.selectedVegetables = {};
                 await this.loadDashboard();
             }
         } finally {
@@ -98,6 +110,16 @@ class VegetableUserDashboard extends Component {
             cancelled: "bg-danger",
         };
         return `badge rounded-pill ${classes[status] || "bg-secondary"}`;
+    }
+
+    openOrder(orderId) {
+        this.action.doAction({
+            type: "ir.actions.act_window",
+            res_model: "sale.order",
+            res_id: orderId,
+            views: [[false, "form"]],
+            target: "current",
+        });
     }
 }
 

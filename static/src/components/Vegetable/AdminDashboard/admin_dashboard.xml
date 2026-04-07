@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="vegetable_house.AdminDashboard" owl="1">
-        <div class="o_vh_dashboard" style="padding: 24px; background: linear-gradient(135deg, #f6fff8 0%, #eefbf2 100%); min-height: 100%;">
+        <div class="o_vh_dashboard" style="padding: 24px; background: linear-gradient(135deg, #f6fff8 0%, #eefbf2 100%); overflow-y: auto;">
             <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
                 <div>
                     <h1 class="mb-1" style="font-size: 30px; font-weight: 700; color: #1f2937;">Vegetable House Dashboard</h1>
@@ -122,21 +122,48 @@
                                                 <th>Total</th>
                                                 <th>Collected</th>
                                                 <th>Due</th>
+                                                <th class="text-center">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr t-foreach="state.metrics.recent_orders" t-as="order" t-key="order.id" style="border-bottom: 1px solid #f3f4f6;">
-                                                <td class="fw-bold text-dark" t-esc="order.name"/>
+                                                <td class="fw-bold">
+                                                    <a href="#" t-on-click.prevent="() => this.openOrder(order.id)" style="color: #16a34a; text-decoration: none;">
+                                                        <t t-esc="order.name"/>
+                                                    </a>
+                                                </td>
                                                 <td t-esc="order.customer"/>
                                                 <td>
-                                                    <span t-att-class="getStatusClass(order.status)"
-                                                          style="display: inline-block; padding: 6px 12px; border-radius: 999px; font-size: 12px; font-weight: 600; background: #ecfdf5; color: #047857;">
-                                                        <t t-esc="getStatusLabel(order.status)"/>
-                                                    </span>
+                                                    <select class="form-select form-select-sm"
+                                                            style="width: 125px; border-radius: 8px; font-size: 13px; font-weight: 500; border-color: #e5e7eb;"
+                                                            t-att-disabled="state.statusChanging"
+                                                            t-on-change="(ev) => this.changeStatus(order.id, ev.target.value)">
+                                                        <t t-foreach="state.statusOptions" t-as="opt" t-key="opt.id">
+                                                            <option t-att-value="opt.id" t-att-selected="opt.id === order.status">
+                                                                <t t-esc="opt.label"/>
+                                                            </option>
+                                                        </t>
+                                                    </select>
                                                 </td>
                                                 <td t-esc="formatCurrency(order.total_price)"/>
                                                 <td class="text-success fw-bold" t-esc="formatCurrency(order.received_amount)"/>
                                                 <td class="text-danger fw-bold" t-esc="formatCurrency(order.due_amount)"/>
+                                                <td class="text-center">
+                                                    <t t-if="order.status === 'delivered' and order.invoice_count === 0">
+                                                        <button class="btn btn-sm btn-outline-primary" 
+                                                                style="border-radius: 6px; font-size: 11px; font-weight: 600;"
+                                                                t-on-click="() => this.createInvoice(order.id)">
+                                                            Create Invoice
+                                                        </button>
+                                                    </t>
+                                                    <t t-if="order.invoice_count > 0">
+                                                        <button class="btn btn-sm btn-light" 
+                                                                style="border-radius: 6px; font-size: 11px; font-weight: 600; color: #4b5563;"
+                                                                t-on-click="() => this.viewInvoice(order.id)">
+                                                            <i class="fa fa-file-text-o me-1"/> View Invoice
+                                                        </button>
+                                                    </t>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>

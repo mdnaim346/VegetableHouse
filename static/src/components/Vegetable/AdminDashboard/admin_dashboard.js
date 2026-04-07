@@ -64,6 +64,33 @@ class VegetableAdminDashboard extends Component {
         }
     }
 
+    async createInvoice(orderId) {
+        this.state.statusChanging = true;
+        try {
+            const result = await this.orm.call("sale.order", "create_order_invoice", [orderId]);
+            if (result.success) {
+                this.notification.add(result.message, { type: "success" });
+                await this.loadDashboard();
+            } else {
+                this.notification.add(result.message, { type: "warning" });
+            }
+        } finally {
+            this.state.statusChanging = false;
+        }
+    }
+
+    async viewInvoice(orderId) {
+        await this.action.doAction({
+            type: "ir.actions.act_window",
+            res_model: "account.move",
+            name: "Order Invoices",
+            view_mode: "list,form",
+            views: [[false, "list"], [false, "form"]],
+            domain: [["line_ids.sale_line_ids.order_id", "=", orderId]],
+            target: "current",
+        });
+    }
+
 
     async loadDashboard() {
         this.state.loading = true;
@@ -95,6 +122,16 @@ class VegetableAdminDashboard extends Component {
         return `o_vh_status_badge o_vh_status_${status || "draft"}`;
     }
 
+    openOrder(orderId) {
+        this.action.doAction({
+            type: "ir.actions.act_window",
+            res_model: "sale.order",
+            res_id: orderId,
+            views: [[false, "form"]],
+            target: "current",
+        });
+    }
+
     openOrders() {
         this.action.doAction({
             type: "ir.actions.act_window",
@@ -105,6 +142,7 @@ class VegetableAdminDashboard extends Component {
                 [false, "form"],
             ],
             target: "current",
+            context: { active_test: false },
         });
     }
 }
