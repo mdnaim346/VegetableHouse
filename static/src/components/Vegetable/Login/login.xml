@@ -179,17 +179,9 @@
                     <button
                         id="vh_login_submit"
                         type="button"
+                        class="vh-btn-primary w-100"
                         t-att-disabled="state.loading"
                         t-on-click="onLogin"
-                        style="
-                            width:100%;padding:13px;
-                            background:linear-gradient(135deg,#16a34a,#065f46);
-                            color:#ffffff;border:none;border-radius:14px;
-                            font-size:15px;font-weight:700;cursor:pointer;
-                            box-shadow:0 6px 20px rgba(22,163,74,0.35);
-                            display:flex;align-items:center;justify-content:center;gap:10px;
-                            opacity: 1;
-                        "
                     >
                         <t t-if="state.loading">
                             <i class="fa fa-spinner fa-spin"/>
@@ -323,16 +315,9 @@
                     <button
                         id="vh_register_submit"
                         type="button"
+                        class="vh-btn-primary w-100"
                         t-att-disabled="state.loading"
                         t-on-click="onRegister"
-                        style="
-                            width:100%;padding:13px;
-                            background:linear-gradient(135deg,#16a34a,#065f46);
-                            color:#ffffff;border:none;border-radius:14px;
-                            font-size:15px;font-weight:700;cursor:pointer;
-                            box-shadow:0 6px 20px rgba(22,163,74,0.35);
-                            display:flex;align-items:center;justify-content:center;gap:10px;
-                        "
                     >
                         <t t-if="state.loading">
                             <i class="fa fa-spinner fa-spin"/>
